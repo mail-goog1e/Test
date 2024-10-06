@@ -30,6 +30,10 @@
       color: white;
       text-align: center;
     }
+    h1 {
+      font-size: 4em;
+      margin-bottom: 20px;
+    }
     .proxy-form {
       margin-top: 20px;
     }
@@ -38,7 +42,7 @@
       font-size: 18px;
       border: none;
       border-radius: 5px;
-      width: 300px;
+      width: 400px;
     }
     .proxy-form button {
       padding: 10px 20px;
@@ -51,9 +55,10 @@
       cursor: pointer;
     }
     iframe {
-      width: 100%;
-      height: 80vh;
+      width: 80%;
+      height: 60vh;
       border: none;
+      margin-top: 20px;
       display: none;
     }
   </style>
@@ -62,8 +67,7 @@
   <canvas id="spaceCanvas"></canvas>
 
   <div class="proxy-container">
-    <h1>Nebula</h1>
-    <p>Enter a URL</p>
+    <h1>Nebula V.1</h1>
     <form class="proxy-form" onsubmit="return loadUrl()">
       <input type="text" id="proxy-url" placeholder="Enter URL" required>
       <button type="submit">Go</button>
