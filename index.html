@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Space Themed Background</title>
+  <title>Space Themed Interactive Background</title>
   <style>
     body, html {
       margin: 0;
@@ -25,19 +25,26 @@
       background: radial-gradient(circle at 30% 30%, #44f, #008);
       border-radius: 50%;
       box-shadow: 0 0 50px rgba(68, 136, 255, 0.6), 0 0 150px rgba(68, 136, 255, 0.3);
-      transition: transform 0.1s ease-out;
+      animation: movePlanet 10s infinite alternate;
+    }
+    @keyframes movePlanet {
+      0% {
+        transform: translateX(-50%) translateY(0);
+      }
+      100% {
+        transform: translateX(-50%) translateY(-20%);
+      }
     }
   </style>
 </head>
 <body>
   <canvas id="spaceCanvas"></canvas>
-  <div class="planet" id="planet"></div>
+  <div class="planet"></div>
 
   <script>
     // Canvas Setup
     const canvas = document.getElementById('spaceCanvas');
     const ctx = canvas.getContext('2d');
-    const planet = document.getElementById('planet');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -46,12 +53,11 @@
     const starCount = 200;
     const stars = [];
 
-    function Star(x, y, size, opacity, velocity) {
+    function Star(x, y, size, opacity) {
       this.x = x;
       this.y = y;
       this.size = size;
       this.opacity = opacity;
-      this.velocity = velocity;
     }
 
     // Create stars
@@ -61,46 +67,27 @@
         const y = Math.random() * canvas.height;
         const size = Math.random() * 2;
         const opacity = Math.random();
-        const velocity = Math.random() * 0.5 + 0.1;
-        stars.push(new Star(x, y, size, opacity, velocity));
+        stars.push(new Star(x, y, size, opacity));
       }
     }
 
     // Draw stars
-    function drawStars(mouseX, mouseY) {
+    function drawStars() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach(star => {
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.fill();
-        
-        // Move stars based on mouse position for parallax effect
-        const dx = (canvas.width / 2 - mouseX) * star.velocity;
-        const dy = (canvas.height / 2 - mouseY) * star.velocity;
-        star.x += dx * 0.005;
-        star.y += dy * 0.005;
-
-        // Twinkle effect
         star.opacity += (Math.random() * 0.05 - 0.025);
         if (star.opacity < 0) star.opacity = 0;
         if (star.opacity > 1) star.opacity = 1;
-
-        // Loop stars if they go off the canvas
-        if (star.x > canvas.width) star.x = 0;
-        if (star.x < 0) star.x = canvas.width;
-        if (star.y > canvas.height) star.y = 0;
-        if (star.y < 0) star.y = canvas.height;
       });
     }
 
-    // Mouse position variables
-    let mouseX = canvas.width / 2;
-    let mouseY = canvas.height / 2;
-
     // Animate stars
     function animate() {
-      drawStars(mouseX, mouseY);
+      drawStars();
       requestAnimationFrame(animate);
     }
 
@@ -114,18 +101,6 @@
       stars.length = 0;
       createStars();
     });
-
-    // Mouse move event listener
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-
-      // Move the planet based on mouse position
-      const planetMovementX = (mouseX - canvas.width / 2) * 0.03;
-      const planetMovementY = (mouseY - canvas.height / 2) * 0.03;
-      planet.style.transform = `translate(${planetMovementX}px, ${planetMovementY}px)`;
-    });
   </script>
 </body>
 </html>
-
