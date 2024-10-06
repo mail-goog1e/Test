@@ -157,10 +157,10 @@
       const urlInput = document.getElementById('proxy-url').value.trim();
       const iframe = document.getElementById('proxy-frame');
 
-      // Automatically prepend 'http://' if no protocol is included
+      // Automatically prepend 'https://' if no protocol is included
       const url = urlInput.startsWith('http://') || urlInput.startsWith('https://') 
         ? urlInput 
-        : `http://${urlInput}`;
+        : `https://${urlInput}`;
 
       // Validate URL format using a regex pattern
       const urlPattern = /^(http:\/\/|https:\/\/)/;
