@@ -77,6 +77,7 @@
   </div>
 
   <script>
+    // Load URL into the proxy iframe
     const loadUrl = () => {
       const urlInput = document.getElementById('proxy-url').value;
       const iframe = document.getElementById('proxy-frame');
@@ -91,7 +92,81 @@
       return false;
     };
 
-    // Space background animation code remains the same from previous examples...
+    // Space-themed background animation
+    const canvas = document.getElementById('spaceCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const starCount = 200;
+    const stars = [];
+
+    function Star(x, y, size, opacity, velocity) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.opacity = opacity;
+      this.velocity = velocity;
+    }
+
+    function createStars() {
+      for (let i = 0; i < starCount; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 2;
+        const opacity = Math.random();
+        const velocity = Math.random() * 0.5 + 0.1;
+        stars.push(new Star(x, y, size, opacity, velocity));
+      }
+    }
+
+    function drawStars(mouseX, mouseY) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.fill();
+        
+        const dx = (canvas.width / 2 - mouseX) * star.velocity;
+        const dy = (canvas.height / 2 - mouseY) * star.velocity;
+        star.x += dx * 0.01;
+        star.y += dy * 0.01;
+
+        star.opacity += (Math.random() * 0.05 - 0.025);
+        if (star.opacity < 0) star.opacity = 0;
+        if (star.opacity > 1) star.opacity = 1;
+
+        if (star.x > canvas.width) star.x = 0;
+        if (star.x < 0) star.x = canvas.width;
+        if (star.y > canvas.height) star.y = 0;
+        if (star.y < 0) star.y = canvas.height;
+      });
+    }
+
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+
+    function animate() {
+      drawStars(mouseX, mouseY);
+      requestAnimationFrame(animate);
+    }
+
+    createStars();
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars.length = 0;
+      createStars();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
   </script>
 </body>
 </html>
