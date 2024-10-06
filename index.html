@@ -154,16 +154,24 @@
 
     // Proxy Functionality
     function loadUrl() {
-      const urlInput = document.getElementById('proxy-url').value;
+      const urlInput = document.getElementById('proxy-url').value.trim();
       const iframe = document.getElementById('proxy-frame');
 
-      if (!urlInput.startsWith('http://') && !urlInput.startsWith('https://')) {
-        alert("Please enter a valid URL starting with http:// or https://");
+      // Automatically prepend 'http://' if no protocol is included
+      const url = urlInput.startsWith('http://') || urlInput.startsWith('https://') 
+        ? urlInput 
+        : `http://${urlInput}`;
+
+      // Validate URL format using a regex pattern
+      const urlPattern = /^(http:\/\/|https:\/\/)/;
+
+      if (!urlPattern.test(url)) {
+        alert("Please enter a valid URL.");
         return false;
       }
 
       iframe.style.display = 'block';
-      iframe.src = urlInput;
+      iframe.src = url;
 
       return false; // Prevent form from submitting
     }
