@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Tab</title> <!-- Updated title -->
+  <title>New Tab</title>
   <style>
     body, html {
       margin: 0;
@@ -36,7 +36,6 @@
     }
     .proxy-form {
       margin-top: 20px;
-      display: flex; /* Added for better alignment */
     }
     .proxy-form input[type="text"] {
       padding: 10px;
@@ -56,9 +55,10 @@
       cursor: pointer;
     }
     iframe {
-      width: 100%;
-      height: 100%;
+      width: 80%;
+      height: 60vh;
       border: none;
+      margin-top: 20px;
       display: none;
     }
   </style>
@@ -67,7 +67,7 @@
   <canvas id="spaceCanvas"></canvas>
 
   <div class="proxy-container">
-    <h1>Nebula V.1</h1> <!-- Updated heading -->
+    <h1>Nebula V.1</h1>
     <form class="proxy-form" onsubmit="return loadUrl()">
       <input type="text" id="proxy-url" placeholder="Enter URL" required>
       <button type="submit">Go</button>
@@ -76,11 +76,10 @@
   </div>
 
   <script>
-    // Load URL into the proxy iframe and hide the input form
+    // Load URL into the proxy iframe
     const loadUrl = () => {
       const urlInput = document.getElementById('proxy-url').value;
       const iframe = document.getElementById('proxy-frame');
-      const form = document.querySelector('.proxy-form');
 
       if (!urlInput.startsWith('http://') && !urlInput.startsWith('https://')) {
         alert("Please enter a valid URL starting with http:// or https://");
@@ -89,11 +88,7 @@
 
       iframe.style.display = 'block';
       iframe.src = `/proxy?url=${encodeURIComponent(urlInput)}`;
-
-      // Hide the input form
-      form.style.display = 'none';
-
-      return false; // Prevent form submission
+      return false;
     };
 
     // Space-themed background animation
