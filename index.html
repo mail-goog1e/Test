@@ -36,6 +36,7 @@
     }
     .proxy-form {
       margin-top: 20px;
+      display: flex; /* Added for better alignment */
     }
     .proxy-form input[type="text"] {
       padding: 10px;
@@ -75,10 +76,11 @@
   </div>
 
   <script>
-    // Load URL into the proxy iframe and enter fullscreen
+    // Load URL into the proxy iframe and hide the input form
     const loadUrl = () => {
       const urlInput = document.getElementById('proxy-url').value;
       const iframe = document.getElementById('proxy-frame');
+      const form = document.querySelector('.proxy-form');
 
       if (!urlInput.startsWith('http://') && !urlInput.startsWith('https://')) {
         alert("Please enter a valid URL starting with http:// or https://");
@@ -87,6 +89,11 @@
 
       iframe.style.display = 'block';
       iframe.src = `/proxy?url=${encodeURIComponent(urlInput)}`;
+
+      // Hide the input form
+      form.style.display = 'none';
+
+      // Open iframe in fullscreen mode
       openFullscreen(iframe);
       return false;
     };
