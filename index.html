@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title>Games</title>
   <style>
     body, html {
       margin: 0;
@@ -12,6 +12,7 @@
       height: 100%;
       background: black;
       font-family: Arial, sans-serif;
+      color: white;
     }
     canvas {
       display: block;
@@ -19,7 +20,7 @@
       top: 0;
       left: 0;
     }
-    .proxy-container {
+    .content-container {
       position: relative;
       z-index: 1;
       display: flex;
@@ -30,42 +31,34 @@
       color: white;
       text-align: center;
     }
-    h1 {
-      font-size: 4em;
-      margin-bottom: 20px;
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      justify-items: center;
+      align-items: center;
     }
-    .proxy-form {
-      margin-top: 20px;
-    }
-    .proxy-form input[type="text"] {
-      padding: 10px;
-      font-size: 18px;
-      border: none;
-      border-radius: 5px;
-      width: 400px;
-    }
-    .proxy-form button {
-      padding: 10px 20px;
-      font-size: 18px;
-      border: none;
-      background-color: #44f;
-      color: white;
-      border-radius: 5px;
-      margin-left: 10px;
+    .game-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
       cursor: pointer;
+      transition: transform 0.2s;
     }
-    iframe {
-      width: 80%;
-      height: 60vh;
-      border: none;
-      margin-top: 20px;
-      display: none;
+    .game-box:hover {
+      transform: scale(1.05);
     }
-    .loading {
-      color: white;
-      font-size: 1.5em;
-      margin-top: 20px;
-      display: none;
+    .game-box img {
+      width: 100%;
+      height: auto;
+    }
+    .game-title {
+      padding: 10px;
+      font-size: 1.2em;
     }
     .footer {
       position: fixed;
@@ -77,28 +70,43 @@
       border-radius: 5px;
       font-size: 14px;
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      text-align: center;
       cursor: pointer;
-      text-decoration: none; /* Ensures no underline */
     }
   </style>
 </head>
 <body>
   <canvas id="spaceCanvas"></canvas>
 
-  <div class="proxy-container">
-    <h1>Nebula V.1</h1>
-    <form class="proxy-form" onsubmit="return loadUrl()">
-      <input type="text" id="proxy-url" placeholder="Enter URL" required aria-label="Enter URL">
-      <button type="submit">Go</button>
-    </form>
-    <div class="loading" id="loading">Loading...</div>
-    <iframe id="proxy-frame" onload="document.getElementById('loading').style.display = 'none';"></iframe>
-  </div>
+  <div class="content-container">
+    <!-- Grid layout for the games -->
+    <div class="games-grid">
+      <!-- Example Game 1 -->
+      <div class="game-box" onclick="window.location.href='https://examplegame1.com'">
+        <img src="https://via.placeholder.com/150" alt="Game 1 Thumbnail">
+        <div class="game-title">Unblocked Game 1</div>
+      </div>
 
-  <!-- "Made by Clowney!" box with a clickable link -->
-  <a href="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcSXTbKcgySGHuKrHY5bAlxCXqUESoLAmREu5uWf0pm3416n3lwP" target="_blank" class="footer">
-    Made by Clowney!
-  </a>
+      <!-- Example Game 2 -->
+      <div class="game-box" onclick="window.location.href='https://examplegame2.com'">
+        <img src="https://via.placeholder.com/150" alt="Game 2 Thumbnail">
+        <div class="game-title">Unblocked Game 2</div>
+      </div>
+
+      <!-- Example Game 3 -->
+      <div class="game-box" onclick="window.location.href='https://examplegame3.com'">
+        <img src="https://via.placeholder.com/150" alt="Game 3 Thumbnail">
+        <div class="game-title">Unblocked Game 3</div>
+      </div>
+
+      <!-- Add more games in the same way -->
+    </div>
+
+    <!-- "Made by Clowney!" footer -->
+    <div class="footer" onclick="window.location.href='https://clowneys-clubhouse.pages.dev'">
+      Made by Clowney!
+    </div>
+  </div>
 
   <script>
     // Space-themed background
@@ -176,32 +184,6 @@
       mouseX = e.clientX;
       mouseY = e.clientY;
     });
-
-    // Proxy Functionality
-    function loadUrl() {
-      const urlInput = document.getElementById('proxy-url').value.trim();
-      const iframe = document.getElementById('proxy-frame');
-      const loading = document.getElementById('loading');
-
-      // Automatically prepend 'https://' if no protocol is included
-      const url = urlInput.startsWith('http://') || urlInput.startsWith('https://') 
-        ? urlInput 
-        : `https://${urlInput}`;
-
-      // Validate URL format using a regex pattern
-      const urlPattern = /^(http:\/\/|https:\/\/)/;
-
-      if (!urlPattern.test(url)) {
-        alert("Please enter a valid URL.");
-        return false;
-      }
-
-      loading.style.display = 'block'; // Show loading indicator
-      iframe.style.display = 'block';
-      iframe.src = url;
-
-      return false; // Prevent form from submitting
-    }
   </script>
 </body>
 </html>
