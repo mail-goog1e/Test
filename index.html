@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Space Themed Background</title>
+  <title>Proxy with Space Themed Background</title>
   <style>
     body, html {
       margin: 0;
@@ -11,24 +11,74 @@
       overflow: hidden;
       height: 100%;
       background: black;
+      font-family: Arial, sans-serif;
     }
     canvas {
       display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .proxy-container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+    .proxy-form {
+      margin-top: 20px;
+    }
+    .proxy-form input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      width: 300px;
+    }
+    .proxy-form button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      background-color: #44f;
+      color: white;
+      border-radius: 5px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+    iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+      display: none;
     }
   </style>
 </head>
 <body>
   <canvas id="spaceCanvas"></canvas>
 
+  <div class="proxy-container">
+    <h1>Space Proxy</h1>
+    <p>Enter a URL to view it through the proxy</p>
+    <form class="proxy-form" onsubmit="return loadUrl()">
+      <input type="text" id="proxy-url" placeholder="Enter URL" required>
+      <button type="submit">Go</button>
+    </form>
+    <iframe id="proxy-frame"></iframe>
+  </div>
+
   <script>
-    // Canvas Setup
+    // Space-themed background (from previous code)
     const canvas = document.getElementById('spaceCanvas');
     const ctx = canvas.getContext('2d');
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    // Star setup
     const starCount = 200;
     const stars = [];
 
@@ -40,7 +90,6 @@
       this.velocity = velocity;
     }
 
-    // Create stars
     function createStars() {
       for (let i = 0; i < starCount; i++) {
         const x = Math.random() * canvas.width;
@@ -52,7 +101,6 @@
       }
     }
 
-    // Draw stars
     function drawStars(mouseX, mouseY) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       stars.forEach(star => {
@@ -61,18 +109,15 @@
         ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
         ctx.fill();
         
-        // Move stars based on mouse position for parallax effect
         const dx = (canvas.width / 2 - mouseX) * star.velocity;
         const dy = (canvas.height / 2 - mouseY) * star.velocity;
         star.x += dx * 0.01;
         star.y += dy * 0.01;
 
-        // Twinkle effect
         star.opacity += (Math.random() * 0.05 - 0.025);
         if (star.opacity < 0) star.opacity = 0;
         if (star.opacity > 1) star.opacity = 1;
 
-        // Loop stars if they go off the canvas
         if (star.x > canvas.width) star.x = 0;
         if (star.x < 0) star.x = canvas.width;
         if (star.y > canvas.height) star.y = 0;
@@ -80,11 +125,9 @@
       });
     }
 
-    // Mouse position variables
     let mouseX = canvas.width / 2;
     let mouseY = canvas.height / 2;
 
-    // Animate stars
     function animate() {
       drawStars(mouseX, mouseY);
       requestAnimationFrame(animate);
@@ -93,7 +136,6 @@
     createStars();
     animate();
 
-    // Resize the canvas when window is resized
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -101,11 +143,26 @@
       createStars();
     });
 
-    // Mouse move event listener
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
     });
+
+    // Proxy Functionality
+    function loadUrl() {
+      const urlInput = document.getElementById('proxy-url').value;
+      const iframe = document.getElementById('proxy-frame');
+
+      if (!urlInput.startsWith('http://') && !urlInput.startsWith('https://')) {
+        alert("Please enter a valid URL starting with http:// or https://");
+        return false;
+      }
+
+      iframe.style.display = 'block';
+      iframe.src = urlInput;
+
+      return false; // Prevent form from submitting
+    }
   </script>
 </body>
 </html>
