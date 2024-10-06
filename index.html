@@ -54,13 +54,6 @@
       margin-left: 10px;
       cursor: pointer;
     }
-    iframe {
-      width: 80%;
-      height: 60vh;
-      border: none;
-      margin-top: 20px;
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -72,7 +65,6 @@
       <input type="text" id="proxy-url" placeholder="Enter URL" required aria-label="Enter URL">
       <button type="submit">Go</button>
     </form>
-    <iframe id="proxy-frame"></iframe>
   </div>
 
   <script>
@@ -155,7 +147,6 @@
     // Proxy Functionality
     function loadUrl() {
       const urlInput = document.getElementById('proxy-url').value.trim();
-      const iframe = document.getElementById('proxy-frame');
 
       // Automatically prepend 'https://' if no protocol is included
       const url = urlInput.startsWith('http://') || urlInput.startsWith('https://') 
@@ -170,8 +161,9 @@
         return false;
       }
 
-      iframe.style.display = 'block';
-      iframe.src = url;
+      // Open the URL in a new about:blank tab
+      const newTab = window.open("about:blank");
+      newTab.location.href = url;
 
       return false; // Prevent form from submitting
     }
