@@ -93,23 +93,8 @@
       // Hide the input form
       form.style.display = 'none';
 
-      // Open iframe in fullscreen mode
-      openFullscreen(iframe);
-      return false;
+      return false; // Prevent form submission
     };
-
-    // Function to open iframe in fullscreen mode
-    function openFullscreen(elem) {
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.mozRequestFullScreen) { // Firefox
-        elem.mozRequestFullScreen();
-      } else if (elem.webkitRequestFullscreen) { // Chrome, Safari, and Opera
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { // IE/Edge
-        elem.msRequestFullscreen();
-      }
-    }
 
     // Space-themed background animation
     const canvas = document.getElementById('spaceCanvas');
