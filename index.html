@@ -1,124 +1,115 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clowney's Clubhouse</title>
+  <title>tProxy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      height: 100%;
-      background: black;
-      font-family: Arial, sans-serif;
-    }
-    canvas {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
-    .content-container {
-      position: relative;
-      z-index: 1;
+    body {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
-      color: white;
-      text-align: center;
+      margin: 0;
+      font-family: Arial, sans-serif;
     }
     h1 {
-      font-size: 3em;
-      margin: 10px 0;
+      font-size: 2em;
+      margin-bottom: -3px;
     }
-    .footer, .games-link {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: rgba(255, 255, 255, 0.1);
-      color: white;
+    .search-container {
+      display: flex;
+      flex-direction: row;
+      border: 1px solid #ccc;
+      border-radius: 25px;
       padding: 10px;
-      border-radius: 5px;
-      font-size: 14px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-      cursor: pointer;
-      text-decoration: none;
+      max-width: 700px;
+      width: 100%;
     }
-    .header-image {
-      width: 250px;
-      height: auto;
-      margin-bottom: 10px;
+    .search-container input {
+      border: none;
+      width: 100%;
+      padding: 0px;
+      outline: none;
+      border-radius: 25px;
+    }
+    .search-container button {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+    .links {
+      margin-top: 20px;
+      margin-left: 80px;
+    }
+    .links a {
+      margin-right: 80px;
     }
   </style>
 </head>
 <body>
-  <canvas id="spaceCanvas"></canvas>
+  <h1>tProxy v2</h1>
+  <div id="haha"></div>
 
-  <div class="content-container">
-    <img src="https://cdn.solo.to/user/a/67021c295f69d8_62643304.jpg" alt="Header Image" class="header-image">
-    <h1>Clowney's Clubhouse</h1>
-
-    <!-- Link to the games page -->
-    <div class="games-link" onclick="window.location.href='/g'">
-      Games
+  <div class="search-container">
+    <input type="text" placeholder="Enter URL and hit the icon on the right..." maxlength="50">
+    <div class="search-icon">
+      <i class="fas fa-search" onclick="getSite()"></i>
     </div>
   </div>
 
+  <div class="links">
+    <a href="stargazers.html">Stargazers</a>
+    <a href="https://github.com/SevenworksDev/tProxy">GitHub + Setup tProxy for your own</a>
+    <a href="https://sevenworks.eu.org">More Projects</a>
+  </div>
+
   <script>
-    // Space background code
-    const canvas = document.getElementById('spaceCanvas');
-    const ctx = canvas.getContext('2d');
+    var haha = document.getElementById("haha");
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function lmao(){
+      var lol = [
+        'Super cool site that displays sites!',
+        'Bypassing web filters since a long time ago.',
+        'TitaniumNetwork sucks, cry about it.',
+        'Do your homework.',
+        'Too slow? Host it yourself instead of complaining non-stop about your issues.',
+        'The voices in my head told me to finish this site.',
+        'Breaking every bone in your body since 1979.',
+        'If you see ads on this site, this idiot is making money off my stuff.',
+        'how do i type',
+        'What do I even put here?',
+        'yoooooooooooooooooooo!',
+        'tProxy for dummies: Type in a URL below to access it.',
+        'Dear Teachers, This is TOTALLY a learning resource.',
+        'I got in trouble for this once.',
+        'Always check if a school chrome extension has a privacy policy, If not then you can punch your school administrators multiple times.',
+        'Cookie Clicker is useless, stop playing it.',
+        'How did this blow up again?',
+        'Submit an issue on GitHub if something broke in tProxy. (If a website being used via tProxy breaks, not our problem)',
+        'Do people use this anymore?',
+        '*cricket noises*'
+      ];
 
-    const stars = [];
+      var hehe = Math.floor(Math.random() * lol.length);
+      haha.textContent = lol[hehe];
+    }
 
-    function createStars() {
-      for (let i = 0; i < 200; i++) {
-        stars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 2,
-          opacity: Math.random(),
-          velocity: Math.random() * 0.5 + 0.1,
-        });
+    lmao()
+
+    function getSite() {
+      let inputValue = document.querySelector('input').value;
+
+      if (!inputValue.startsWith('http://') && !inputValue.startsWith('https://')) {
+        inputValue = 'http://' + inputValue;
       }
+
+      const encodedValue = btoa(inputValue);
+      window.location.href = "/web/_" + encodedValue + '_/';
     }
-
-    function drawStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
-        ctx.fill();
-
-        star.x += (canvas.width / 2 - window.innerWidth / 2) * star.velocity * 0.01;
-        star.y += (canvas.height / 2 - window.innerHeight / 2) * star.velocity * 0.01;
-
-        if (star.x > canvas.width) star.x = 0;
-        if (star.x < 0) star.x = canvas.width;
-        if (star.y > canvas.height) star.y = 0;
-        if (star.y < 0) star.y = canvas.height;
-      });
-    }
-
-    function animate() {
-      drawStars();
-      requestAnimationFrame(animate);
-    }
-
-    createStars();
-    animate();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
   </script>
 </body>
 </html>
