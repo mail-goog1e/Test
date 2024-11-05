@@ -1,115 +1,253 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>tProxy</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>Clowney's Clubhouse</title>
   <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+    /* General Styles */
+    body, html {
       margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background: black;
       font-family: Arial, sans-serif;
     }
-    h1 {
-      font-size: 2em;
-      margin-bottom: -3px;
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
-    .search-container {
+    .content-container {
+      position: relative;
+      z-index: 1;
       display: flex;
-      flex-direction: row;
-      border: 1px solid #ccc;
-      border-radius: 25px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3em;
+      margin: 2px 0;
+    }
+    .footer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
       padding: 10px;
-      max-width: 700px;
-      width: 100%;
+      border-radius: 5px;
+      font-size: 14px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      text-decoration: none;
     }
-    .search-container input {
-      border: none;
-      width: 100%;
-      padding: 0px;
-      outline: none;
-      border-radius: 25px;
+    .box-container {
+      display: flex;
+      gap: 20px;
     }
-    .search-container button {
+    .games-box, .search-engine-box {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      padding: 20px;
+      border-radius: 5px;
+      font-size: 18px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      margin: 20px 0;
+      cursor: pointer;
+      width: 200px;
+      text-align: center;
+    }
+    /* Search Engine Styles */
+    .search-engine-container {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+    .search-engine-container h1 {
+      font-size: 4em;
+      margin-bottom: 20px;
+    }
+    .proxy-form {
+      margin-top: 20px;
+    }
+    .proxy-form input[type="text"] {
+      padding: 10px;
+      font-size: 18px;
       border: none;
-      background-color: transparent;
+      border-radius: 5px;
+      width: 400px;
+    }
+    .proxy-form button {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      background-color: #189bcc;
+      color: white;
+      border-radius: 5px;
+      margin-left: 10px;
       cursor: pointer;
     }
-    .links {
-      margin-top: 20px;
-      margin-left: 80px;
-    }
-    .links a {
-      margin-right: 80px;
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: none;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
-  <h1>tProxy v2</h1>
-  <div id="haha"></div>
+  <canvas id="spaceCanvas"></canvas>
 
-  <div class="search-container">
-    <input type="text" placeholder="Enter URL and hit the icon on the right..." maxlength="50">
-    <div class="search-icon">
-      <i class="fas fa-search" onclick="getSite()"></i>
+  <div class="content-container">
+    <h1 id="heading">Clowney's Clubhouse</h1>
+
+    <div class="box-container">
+      <div class="games-box" id="gamesBox" onclick="window.location.href='https://clowneys-clubhouse.pages.dev/g'">
+        Games
+      </div>
+      <div class="search-engine-box" id="searchEngineBox">
+        Clowney's Search Engine
+      </div>
     </div>
+
+    <a href="mailto:clowneysclubhouse@gmail.com" target="_blank" class="footer">
+      Made by Clowney!
+    </a>
   </div>
 
-  <div class="links">
-    <a href="stargazers.html">Stargazers</a>
-    <a href="https://github.com/SevenworksDev/tProxy">GitHub + Setup tProxy for your own</a>
-    <a href="https://sevenworks.eu.org">More Projects</a>
+  <!-- Search Engine Container -->
+  <div class="search-engine-container" id="searchEngineContainer">
+    <h1>Clowney's Search Engine</h1>
+    <form class="proxy-form" onsubmit="return loadUrl()">
+      <input type="text" id="proxy-url" placeholder="Enter URL" required aria-label="Enter URL">
+      <button type="submit">Go</button>
+    </form>
   </div>
+
+  <iframe id="proxy-frame"></iframe>
 
   <script>
-    var haha = document.getElementById("haha");
+    // Space-themed background
+    const canvas = document.getElementById('spaceCanvas');
+    const ctx = canvas.getContext('2d');
 
-    function lmao(){
-      var lol = [
-        'Super cool site that displays sites!',
-        'Bypassing web filters since a long time ago.',
-        'TitaniumNetwork sucks, cry about it.',
-        'Do your homework.',
-        'Too slow? Host it yourself instead of complaining non-stop about your issues.',
-        'The voices in my head told me to finish this site.',
-        'Breaking every bone in your body since 1979.',
-        'If you see ads on this site, this idiot is making money off my stuff.',
-        'how do i type',
-        'What do I even put here?',
-        'yoooooooooooooooooooo!',
-        'tProxy for dummies: Type in a URL below to access it.',
-        'Dear Teachers, This is TOTALLY a learning resource.',
-        'I got in trouble for this once.',
-        'Always check if a school chrome extension has a privacy policy, If not then you can punch your school administrators multiple times.',
-        'Cookie Clicker is useless, stop playing it.',
-        'How did this blow up again?',
-        'Submit an issue on GitHub if something broke in tProxy. (If a website being used via tProxy breaks, not our problem)',
-        'Do people use this anymore?',
-        '*cricket noises*'
-      ];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-      var hehe = Math.floor(Math.random() * lol.length);
-      haha.textContent = lol[hehe];
+    const starCount = 200;
+    const stars = [];
+
+    function Star(x, y, size, opacity, velocity) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.opacity = opacity;
+      this.velocity = velocity;
     }
 
-    lmao()
+    function createStars() {
+      for (let i = 0; i < starCount; i++) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const size = Math.random() * 2;
+        const opacity = Math.random();
+        const velocity = Math.random() * 0.5 + 0.1;
+        stars.push(new Star(x, y, size, opacity, velocity));
+      }
+    }
 
-    function getSite() {
-      let inputValue = document.querySelector('input').value;
+    function drawStars(mouseX, mouseY) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+        ctx.fill();
 
-      if (!inputValue.startsWith('http://') && !inputValue.startsWith('https://')) {
-        inputValue = 'http://' + inputValue;
+        const dx = (canvas.width / 2 - mouseX) * star.velocity;
+        const dy = (canvas.height / 2 - mouseY) * star.velocity;
+        star.x += dx * 0.01;
+        star.y += dy * 0.01;
+
+        star.opacity += (Math.random() * 0.05 - 0.025);
+        if (star.opacity < 0) star.opacity = 0;
+        if (star.opacity > 1) star.opacity = 1;
+
+        if (star.x > canvas.width) star.x = 0;
+        if (star.x < 0) star.x = canvas.width;
+        if (star.y > canvas.height) star.y = 0;
+        if (star.y < 0) star.y = canvas.height;
+      });
+    }
+
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+
+    function animate() {
+      drawStars(mouseX, mouseY);
+      requestAnimationFrame(animate);
+    }
+
+    createStars();
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars.length = 0;
+      createStars();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    // Show Search Engine Container when Clowney's Search Engine box is clicked
+    document.getElementById('searchEngineBox').onclick = function() {
+      document.querySelector('.content-container').style.display = 'none';
+      document.getElementById('searchEngineContainer').style.display = 'flex';
+      window.location.href = 'https://mail-goog1e.github.io/s';
+    }
+
+    // Proxy Functionality
+    function loadUrl() {
+      const urlInput = document.getElementById('proxy-url').value.trim();
+      const iframe = document.getElementById('proxy-frame');
+      const proxyUrl = `http://108.181.6.89/?url=` + encodeURIComponent(urlInput);
+
+      const urlPattern = /^(http:\/\/|https:\/\/)/;
+      if (!urlPattern.test(urlInput)) {
+        alert("Please enter a valid URL.");
+        return false;
       }
 
-      const encodedValue = btoa(inputValue);
-      window.location.href = "/web/_" + encodedValue + '_/';
+      iframe.style.display = 'block';
+      iframe.src = proxyUrl;
+      return false;
     }
+
+    // Warn before closing
+    window.addEventListener('beforeunload', (e) => {
+      const confirmationMessage = "Are you sure you want to leave this page?";
+      e.returnValue = confirmationMessage;
+      return confirmationMessage;
+    });
   </script>
 </body>
 </html>
